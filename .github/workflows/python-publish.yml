@@ -34,9 +34,9 @@ jobs:
 
           if ref in ("refs/heads/main", "refs/heads/master") or event in ("release", "workflow_dispatch"):
               machines = [
-                  ("linux", "ubuntu-latest", "auto64 auto32"),
+                  ("linux", "ubuntu-24.04", "auto64 auto32"),
                   ("linux-arm", "ubuntu-24.04-arm", "auto"),
-                  ("linux-riscv64", "ubuntu-latest", "riscv64"),
+                  ("linux-riscv64", "ubuntu-24.04", "riscv64"),
                   ("macos", "macos-latest", "arm64 x86_64 universal2"),
                   ("windows", "windows-latest", "auto64 auto32"),
                   ("windows-arm", "windows-11-arm", "auto"),
@@ -44,7 +44,7 @@ jobs:
               py_versions = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
           else:
               machines = [
-                  ("linux", "ubuntu-latest", "native"),
+                  ("linux", "ubuntu-24.04", "native"),
                   ("windows", "windows-latest", "native"),
               ]
               py_versions = ["3.9", "3.14"] # Chosing the two most likely to break in PRs
@@ -97,7 +97,7 @@ jobs:
         if-no-files-found: error
 
   build-sdist:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v6
     - name: Set up Python
