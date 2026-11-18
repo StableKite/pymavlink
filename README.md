@@ -11,6 +11,9 @@ The build includes the MAVLink XML definitions from the
 [upstream 2.4.50 source distribution](https://pypi.org/project/pymavlink/2.4.50/#files).
 Set `MDEF` to build with a different set of definitions.
 On free-threaded CPython, the default build uses the Python flight-log indexer.
+The bundled dialects and flight-log reader do not load lxml. The `mavgen`
+XML validator loads lxml, and lxml 6.x enables the GIL on free-threaded CPython.
+lxml 7.0.0b1 provides experimental free-threading support.
 
 # Documentation
 

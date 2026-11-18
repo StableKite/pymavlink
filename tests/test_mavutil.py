@@ -10,6 +10,7 @@ import unittest
 from pymavlink import mavutil
 
 
+@unittest.skipUnless(hasattr(socket, "AF_UNIX"), "requires Unix-domain sockets")
 class TestUnixDomainSocket(unittest.TestCase):
     def test_stream_transport(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
