@@ -12,15 +12,18 @@ except LookupError:
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 import glob, os, shutil, fnmatch, sys, platform, warnings
+import sysconfig
 
 sys.path.insert(0, os.path.dirname(__file__))
 from __init__ import __version__
 
 # Option for building the fast indexer Cython module
-build_fast_index = True
-# Disable by default on Windows and macOS
-if platform.system() in ("Windows", "Darwin"):
-    build_fast_index = False
+# The native indexer requires the GIL. Free-threaded builds use the existing
+# Python indexer by default, as do Windows and macOS builds.
+build_fast_index = (
+    platform.system() not in ("Windows", "Darwin")
+    and not sysconfig.get_config_var("Py_GIL_DISABLED")
+)
 # Allow an environment variable to override the default
 if os.getenv("PYMAVLINK_FAST_INDEX", None) == "0":
     build_fast_index = False
@@ -50,10 +53,10 @@ def generate_content():
         mdef_paths = [os.getenv("MDEF")]
 
     else:
-        mdef_paths = [os.path.join('..', 'message_definitions'),
+        mdef_paths = ['message_definitions',
+                      os.path.join('..', 'message_definitions'),
                       os.path.join('mavlink', 'message_definitions'),
                       os.path.join('..', 'mavlink', 'message_definitions'),
-                      os.path.join('message_definitions'),
         ]
 
     for path in mdef_paths:
@@ -117,7 +120,6 @@ def test_python_h_available():
     import tempfile
     import distutils.ccompiler
     import distutils.sysconfig
-    import sysconfig
 
     with tempfile.TemporaryDirectory() as tmpdir:
         test_file = os.path.join(tmpdir, "test_python_h.c")
@@ -191,7 +193,7 @@ setup (name = 'pymavlink',
                                                      'CPP11/include_v2.0/*.hpp',
                                                      'CS/*.*',
                                                      'swift/*.swift',],
-                        'pymavlink'              : ['message_definitions/v*/*.xml']
+                        'pymavlink'              : ['py.typed', 'message_definitions/v*/*.xml']
                         },
        packages = ['pymavlink',
                    'pymavlink.generator',

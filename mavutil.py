@@ -34,6 +34,7 @@ UDP_MAX_PACKET_LEN = 65535
 # Store the MAVLink library for the currently-selected dialect
 # (set by set_dialect())
 mavlink: ModuleType | None = None
+current_dialect: str
 
 # Store the mavlink file currently being operated on
 # (set by mavlink_connection())

@@ -4,6 +4,14 @@ This is a Python implementation of the MAVLink protocol.
 It includes a source code generator (generator/mavgen.py) to create MAVLink protocol implementations for other programming languages as well.
 Also contains tools for analyzing flight logs.
 
+## StableKite build
+
+Install from Git with `python -m pip install git+https://github.com/StableKite/pymavlink.git`.
+The build includes the MAVLink XML definitions from the
+[upstream 2.4.50 source distribution](https://pypi.org/project/pymavlink/2.4.50/#files).
+Set `MDEF` to build with a different set of definitions.
+On free-threaded CPython, the default build uses the Python flight-log indexer.
+
 # Documentation
 
 Please see http://ardupilot.org/dev/docs/mavlink-commands.html for mavlink command reference.

@@ -6,6 +6,9 @@ text eol=lf
 *.sh text eol=lf
 *.bash text eol=lf
 
+# Preserve the exact bytes of the bundled upstream release definitions.
+message_definitions/v1.0/*.xml -text
+
 *.bin -diff
 *.elf -diff
 *.hex -diff

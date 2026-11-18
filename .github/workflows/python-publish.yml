@@ -80,11 +80,6 @@ jobs:
       uses: docker/setup-qemu-action@v4
       with:
         platforms: riscv64
-    - name: Install mavlink definitions
-      shell: bash
-      run: |
-        git clone https://github.com/ArduPilot/mavlink.git
-        ln -s $PWD/mavlink/message_definitions
     - name: Set CIBW_BUILD
       shell: bash
       run: echo "CIBW_BUILD=cp${PYTHON_VERSION/./}-*" >> $GITHUB_ENV
@@ -109,10 +104,6 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: "3.9"
-    - name: Install mavlink messages
-      run: |
-        git clone https://github.com/ArduPilot/mavlink.git
-        ln -s $PWD/mavlink/message_definitions
     - name: Install dependencies
       run: |
         python3 -m pip install -U pip
@@ -149,7 +140,7 @@ jobs:
         if-no-files-found: error
 
     - name: Publish package
-      if: github.event_name == 'release' && github.event.action == 'published'
+      if: github.repository == 'ArduPilot/pymavlink' && github.event_name == 'release' && github.event.action == 'published'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__

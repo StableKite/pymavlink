@@ -1,1 +1,3 @@
 include dfindexer/dfindexer_cy.pyx
+include py.typed
+recursive-include message_definitions *.xml
