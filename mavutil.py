@@ -34,7 +34,6 @@ UDP_MAX_PACKET_LEN = 65535
 # Store the MAVLink library for the currently-selected dialect
 # (set by set_dialect())
 mavlink: ModuleType | None = None
-current_dialect: str
 
 # Store the mavlink file currently being operated on
 # (set by mavlink_connection())
@@ -141,7 +140,8 @@ def set_dialect(dialect: str, with_type_annotations: bool | None = None) -> None
     mavlink = mod
 
 # Set the default dialect. This is done here as it needs to be after the function declaration
-set_dialect(os.environ['MAVLINK_DIALECT'])
+current_dialect: str = os.environ['MAVLINK_DIALECT']
+set_dialect(current_dialect)
 
 class mavfile_state:
     '''state for a particular system id'''

@@ -64,6 +64,10 @@ def test_wlua(request, tmp_path, snapshot, mdef, pcap):
     if tshark is None:
         pytest.skip("tshark (Wireshark CLI) not found")
 
+    # Lua number formatting otherwise follows the host's decimal separator.
+    locale_script = tmp_path / "numeric_locale.lua"
+    locale_script.write_text("assert(os.setlocale('C', 'numeric'))\n", encoding="ascii")
+
     env = {
         # suppress system-wide wireshark config (if any)
         "WIRESHARK_CONFIG_DIR": str(no_such_dir),
@@ -81,6 +85,7 @@ def test_wlua(request, tmp_path, snapshot, mdef, pcap):
             tshark,
             "-Ttext",
             "-r" + str(packet_file),
+            "-Xlua_script:" + str(locale_script),
             "-Xlua_script:" + str(lua_filepath),
             "-Omavlink_proto",
             "-n",
